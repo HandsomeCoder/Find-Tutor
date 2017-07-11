@@ -1,0 +1,46 @@
+div h2{
+	text-align: center;
+}
+#signUp{
+	display: inline-flex;
+	margin:0vh 20vw;
+	background-color: white;
+}
+
+#simpleSignUp, #OAuthSignUp{
+	display: inline;
+}
+
+#OAuthSignUp{
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+#OAuthSignUp button{
+	margin: 0.5em;
+}
+
+#OAuthSignUp p{
+	font-weight: bold;
+}
+
+table{
+
+	margin: auto;
+	font-size: 1.5em;
+	font-weight: bold;
+
+}
+
+table tr td{
+	padding: 1em;
+}
+
+form table input,select{
+	border: none;
+	border-bottom: 1px black solid;
+	padding: 0.5em;
+	width: 35em;
+	font-size: 16px;
+}

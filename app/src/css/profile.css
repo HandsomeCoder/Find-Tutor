@@ -1,0 +1,115 @@
+section{
+	margin: 25px 5em;
+}
+
+#header > p{
+    margin: auto;
+    font-weight: bold;
+    font-size: x-large;
+    padding: 0.5em;
+    background-color: white;
+}
+
+#profileSection{
+	display: flex;
+	margin-top: 5px;
+}
+
+#subNavigator{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+#navOptions > p{
+   margin: 0em 1.5em;
+   padding: 0.5em 0.5em;  
+}
+
+#navOptions > p:hover{
+   background-color: #808080;
+   border-radius: 5px;
+   cursor: pointer;
+   
+   
+}
+
+#infoSection{
+	flex: 3;
+	background-color: white;
+	margin-left: 5px;
+}
+
+#infoHeader{
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 1px #808080 solid;
+}
+
+#infoHeader > p{
+	flex: 3;
+    font-weight: bold;
+    font-size: x-large;
+    padding: 0.5em;
+    margin: 0.5em;
+}
+
+#infoHeader > button{
+	margin: 1em;
+	padding: 0.5em;
+}
+
+#content{
+	margin: 2em 5em;	
+}
+
+#displayContent{
+    border-collapse: collapse;
+    width: 100%;
+    display: flex;
+}
+
+#displayContent tr td{
+    padding: 1em;
+    border-bottom: 1px gray solid;
+}
+
+#displayContent tr td:first-child{
+	color: grey;
+}
+
+#displayContent tr td:nth-child(2){
+    font-weight: bold;
+    width: 83%;
+}
+
+#editContent{
+	margin: auto;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+#editContent tr td{
+	padding: 1em;
+}
+
+#editContent input,select{
+	border: none;
+	border-bottom: 1px black solid;
+	padding: 0.5em;
+	width: 35em;
+	font-size: 16px;
+}
+
+#submit{
+	float: right;
+}
+
+#submit:disabled{
+	background-color: #dbdbdb;
+}
+
+
+
+

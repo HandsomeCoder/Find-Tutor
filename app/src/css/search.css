@@ -1,0 +1,68 @@
+#searchForm{
+    margin: 2em 1em;
+    display: flex;
+}
+
+#searchForm input,select,button{
+    flex: 1;
+    border: none;
+    padding: 0.5em;
+    margin: 0em 1em;
+    width: 15em;
+    font-size: 16px;
+}
+#searchForm input,select{
+    border-bottom: 1px black solid;
+}
+
+button:hover{
+	background-color: #adadad;
+}
+
+.searchResult{
+	margin: 2em 1em;
+	background-color: white;
+	display: flex;
+	border-radius: 1em;
+}
+
+.searchNumber{
+	flex: 0.5;
+}
+
+.searchNumber p{
+	text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.searchInfo{
+	flex: 5;
+
+}
+
+.searchInfo p{
+	text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.searchBtn{
+	flex: 0.5;
+	display: flex;
+    flex-direction: column;
+}
+
+.searchBtn button{
+    border: 1px black solid;
+    margin: 0.1em 2.5em;
+    justify-content: center;
+    font-weight: normal;
+    width: 10em;
+}
+
+.profileSection{
+	flex: 3;
+	background-color: white;
+	margin-left: 5px;
+}

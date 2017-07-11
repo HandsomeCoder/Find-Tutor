@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Find Tutor </title>
+		<link rel="stylesheet" type="text/css" href="../css/site.css">
+		<link rel="stylesheet" type="text/css" href="../css/signUp.css">	
+	</head>
+	<body>
+		<nav>
+			<div id="banner">
+				<h1> Find Tutor </h1>
+			</div>
+        </nav>
+        <div>
+			<div>
+				<h2> Already having an Account? <a href="signIn.html">Sign In</a></h2>
+			</div>
+			<div id="signUp">
+				<div id="simpleSignUp">
+					<form id="signUpForm" action="javascript:void(0)">
+						<table >
+							<tr>
+								<th><h3> Sign Up </h3></th> 
+							</tr>
+							<tr>
+								<td>
+									<input type="text" name="username" id="username" placeholder="Username" pattern="^[a-zA-Z0-9]*$" title="Only alphabets and numbers" required>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input type="password" name="password" id="password" pattern=".{8,}" title="password should be of atleast 8 character long" placeholder="Password" required>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input type="password" name="confirmpassword" id="confirmpassword" pattern=".{8,}" title="password should be of atleast 8 character long" placeholder="Confirm password" required>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<select id="role" name="role" required>
+									  <option value="">Select Role</option>
+									  <option value="Student">Student</option>
+									  <option value="Tutor">Tutor</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span id="message"></span>
+									<button id="submit" type="submit" disabled>Register</button>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				<div id="OAuthSignUp">
+					<p> Or Sign Up with </p>
+					<button id="submit" type="submit">Google</button>
+					<button id="submit" type="submit">LinkedIn</button>
+					<button id="submit" type="submit">Facebook</button>
+					<button id="submit" type="submit">Twitter</button>
+					<button id="submit" type="submit">GitHub</button>
+				</div>
+			</div>
+		</div>
+		<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script  type = "text/javascript" src="../js/signUp.js"></script>
+	</body>
+</html>

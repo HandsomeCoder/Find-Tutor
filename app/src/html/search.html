@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Find Tutor </title>
+		<link rel="stylesheet" type="text/css" href="../css/site.css">
+		<link rel="stylesheet" type="text/css" href="../css/search.css">
+		<link rel="stylesheet" type="text/css" href="../css/profile.css">		
+	</head>
+	<body >
+		<nav>
+			<div id="banner">
+				<h1> Find Tutor </h1>
+			</div>
+			<div id="search" class="navButton" >
+				<img src="../images/search-icon.png" alt="Search">
+			</div>
+			<div id="conversation" class="navButton" >
+				<img src="../images/conversation-icon.png" alt="Conversation">
+			</div>
+			<div id="profile" class="navButton" >
+				<img id="profile-icon" src="../images/default_profile.jpg" alt="Profile">
+			</div>
+			<div id="logout" class="navButton" >
+				<img src="../images/logout-icon.png" alt="Logout">
+			</div>
+		</nav>
+		<div id="viewProfile">
+			<div>
+				<form id="searchForm" method="post" action="javascript:void(0)">
+					<input id="country" name="country" placeholder="Country" required>
+					<input id="state" name="state" placeholder="State" required>
+					<input id="city" name="city" placeholder="City" required>
+					<button id="searchBtn">Search</button>
+				</form>	
+			</div>
+			<div id="result">
+
+			</div>
+		</div>
+		<script  type = "text/javascript" src="../js/search.js"></script>
+		<script  type = "text/javascript" src="../js/site.js"></script>
+	</body>
+</html>
