@@ -41,7 +41,6 @@ app.get('/js/:jsFile', function (req, res) {
   res.sendFile(path.join(__dirname, 'js',req.params.jsFile));
 });
 
-
 app.post('/signup', function (req, res) {
 	var request = require('request');
 	request.post({
