@@ -76,3 +76,20 @@ function getViewInfo(table, user_id){
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({table: table,user_id: user_id}));  
 }
+
+function sendMsg(x){
+	var request = new XMLHttpRequest();
+    
+    request.onreadystatechange = function () {
+		if (request.readyState === XMLHttpRequest.DONE) {
+			if (request.status === 200) {
+				alert(request.responseText)
+            } else {
+				alert(request.responseText)
+			}
+		}
+	};
+	request.open('POST', 'http://localhost:8080/reqChat', true);
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.send(JSON.stringify({rec_user_id: x})); 
+}

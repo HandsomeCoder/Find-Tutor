@@ -3,9 +3,9 @@
 	<head>
 		<title> Find Tutor </title>
 		<link rel="stylesheet" type="text/css" href="../css/site.css">
-		<link rel="stylesheet" type="text/css" href="../css/profile.css">		
+		<link rel="stylesheet" type="text/css" href="../css/conversation.css">		
 	</head>
-	<body onload="getNav()">
+	<body onload="getNames()">
 		<nav>
 			<div id="banner">
 				<h1> Find Tutor </h1>
@@ -23,5 +23,26 @@
 				<img src="../images/logout-icon.png" alt="Logout">
 			</div>
         </nav>
+        <div id="conversationSection">
+			<div id="nameSection">
+				Search for People to chat
+			</div>
+			<div id="textArea">
+				<div id="chatBox">
+				</div>
+				<form id="messageForm">
+					<input type="text" id="message" name="message" placeholder="Write your message here...">
+					<button type="submit" value="Send">Send</button>
+				</form>
+			</div>
+			<div id="requestName">
+				<div id="waitingForResponse">
+				</div>
+				<div id="waitingforApproval">
+				</div>
+			</div>
+        </div>
+        <script  type = "text/javascript" src="../js/conversation.js"></script>
+		<script  type = "text/javascript" src="../js/site.js"></script>
 	</body>
 </html>

@@ -596,7 +596,7 @@ function filterByRole(users,req,res){
 						</div>
 						<div class="searchBtn">
 							<button id="viewProfileBtn_${i+1}" onclick="viewProfile(${user_id},\'${role}\',${i+1})">View Profile</button>
-							<button>Send Message</button>
+							<button onclick="sendMsg(${user_id})">Send Message</button>
 						</div>
 					</div>
 					<div id="viewUserProfile${i+1}">
@@ -833,4 +833,183 @@ function loadProfileInfo(req,table,data){
 		break;
 	};		
 }
+
+app.post('/reqChat', function (req, res) {
+	if(checkRequest(req,res)){
+		var request = require('request');
+		request.post({
+			url: "http://data.c100.hasura.me/v1/query",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": "Bearer "+req.session.auth.token
+			},
+			body: {
+				"type": "insert",
+				"args": {
+					"table": "request",
+					"objects": [{
+						"req_send_user_id":req.session.auth.user_id,
+						"req_receiver_user_id": req.body.rec_user_id,
+					}]
+					
+				}
+			},
+			json:true
+		}, function(error, response, body){
+				if(response.statusCode === 200){
+					res.status(200).send("Request sent");
+				} else if(response.statusCode === 400) {
+					res.status(response.statusCode).send("Request already sent");
+				}else{
+					console.log(response.body);
+					res.status(response.statusCode).send(response.body);
+				}
+			});
+	}
+})
+
+app.post('/reqNameToChat', function (req, res) {
+	
+		
+	var request = require('request');
+	request.post({
+		url: "http://data.c100.hasura.me/v1/query",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer "+req.session.auth.token
+		},
+		body: {
+			"type": "select",
+			"args": {
+				"table": "request",
+				"columns": ["req_receiver_user_id"],
+				"where":{
+					"$or": [{"req_send_user_id": req.session.auth.user_id},
+					{"req_receiver_user_id": req.session.auth.user_id}],
+					"req_status": "true"
+				}
+				
+			}
+		},
+		json:true
+	}, function(error, response, body){
+			if(response.statusCode === 200){
+				res.status(200).send(response.body);
+			} else{
+				console.log(response.body);
+				res.status(response.statusCode).send(response.body);
+			}
+		});
+})
+
+function checkRequest(req,res){
+var request = require('request');
+	request.post({
+		url: "http://data.c100.hasura.me/v1/query",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer "+req.session.auth.token
+		},
+		body: {
+			"type": "select",
+			"args": {
+				"table": "request",
+				"columns": ["req_status"],
+				"where":{
+					"req_send_user_id": req.body.rec_user_id,
+					"req_receiver_user_id": req.session.auth.user_id,
+				}
+				
+			}
+		},
+		json:true
+	}, function(error, response, body){
+			if(response.statusCode === 200){
+				if(response.body[0] === undefined){
+					console.log(response.body[0]);
+					return true;
+				}
+				else{
+					if(response.body[0].req_status === true){
+						console.log("true");
+						res.status(200).send("Request is already approved, you can chat");
+					}
+					else{
+						console.log("false");
+						res.status(200).send("Approve request to chat");
+					}
+				}
+				return false;
+			} else{
+				console.log(response.body);
+				return true;
+			}
+		});	
+}
+
+app.post('/reqNameOfPending', function (req, res) {
+	
+	var request = require('request');
+	request.post({
+		url: "http://data.c100.hasura.me/v1/query",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer "+req.session.auth.token
+		},
+		body: {
+			"type": "select",
+			"args": {
+				"table": "request",
+				"columns": ["req_send_user_id"],
+				"where":{
+					"req_receiver_user_id": req.session.auth.user_id,
+					"req_status": "false"
+				}
+				
+			}
+		},
+		json:true
+	}, function(error, response, body){
+			if(response.statusCode === 200){
+				res.status(200).send(response.body);
+			} else{
+				console.log(response.body);
+				res.status(response.statusCode).send(response.body);
+			}
+		});
+})
+
+app.post('/reqNameOfWaiting', function (req, res) {
+	
+	var request = require('request');
+	request.post({
+		url: "http://data.c100.hasura.me/v1/query",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer "+req.session.auth.token
+		},
+		body: {
+			"type": "select",
+			"args": {
+				"table": "request",
+				"columns": ["req_receiver_user_id"],
+				"where":{
+					"$or": [{"req_send_user_id": req.session.auth.user_id},
+					{"req_receiver_user_id": req.session.auth.user_id}],
+					"req_status": "false"
+				}
+				
+			}
+		},
+		json:true
+	}, function(error, response, body){
+			if(response.statusCode === 200){
+				res.status(200).send(response.body);
+			} else{
+				console.log(response.body);
+				res.status(response.statusCode).send(response.body);
+			}
+		});
+})
+
 
