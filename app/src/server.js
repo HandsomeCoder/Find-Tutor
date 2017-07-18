@@ -57,7 +57,7 @@ app.post('/signup', function (req, res) {
 //	   console.log(JSON.stringify(response.body));
 		if(response.statusCode === 200){
 			console.log("User Created"+response.statusCode+""+response.body);
-			assignRole(response.body.hasura_id,response.body.auth_token,req.body.role);
+
 			
 			req.session.auth = {
 				user_id: response.body.hasura_id,
@@ -65,8 +65,7 @@ app.post('/signup', function (req, res) {
 				token: response.body.auth_token,
 				role: req.body.role
 			};
-			
-			res.status(response.statusCode).send("Registered!")
+			addBasicInfo(req.body.fname,req.body.lname,req.body.gender,req,res);
 		} else {
 			console.log("Failed"+response.statusCode+""+JSON.stringify(response.body.message));
 			res.status(response.statusCode).send(JSON.stringify(response.body.message));
@@ -74,22 +73,55 @@ app.post('/signup', function (req, res) {
 	});
 });
 
-function assignRole(id,token,role){
-	console.log(id+" "+token+" "+role)
+function addBasicInfo(fname,lname,gender,req,res){
+	console.log(fname+" "+lname+" "+gender)
+	var request = require('request');
+			request.post({
+				 url: "http://data.c100.hasura.me/v1/query",
+				 headers: {
+					"Content-Type": "application/json",
+					"Authorization": "Bearer "+req.session.auth.token
+				 },
+				 body: {
+					"type": "insert",
+					"args": {
+						"table": "user_basic_info",
+						"objects": [{
+								"user_id": req.session.auth.user_id,
+								"firstname": fname,
+								"lastname": lname,
+								"gender": gender
+							}]
+					}
+				},
+				json:true
+			}, function(error, response, body){
+		//	   console.log(JSON.stringify(response.body));
+				if(response.statusCode === 200){
+					console.log(response.body);
+					assignRole(req,res);
+				} else {
+					console.log(response.body);
+					res.status(401).send("Something went wrong, Try Again");
+				}
+			});	
+}
+
+function assignRole(req,res){
 	var request = require('request');
 	request.post({
 		 url: "http://data.c100.hasura.me/v1/query",
 		 headers: {
 			"Content-Type": "application/json",
-			"Authorization": "Bearer "+token
+			"Authorization": "Bearer "+req.session.auth.token
 		 },
 		 body: {
 			"type": "insert",
 			"args": {
 				"table": "user_role",
 				"objects": [{
-						"user_id": id,
-						"role": role
+						"user_id": req.session.auth.user_id,
+						"role": req.session.auth.role
 					}]
 			}
 		},
@@ -97,7 +129,10 @@ function assignRole(id,token,role){
 	}, function(error, response, body){
 //	   console.log(JSON.stringify(response.body));
 		if(response.statusCode === 200){
-			console.log("User role assigned");
+			console.log("User role assigned"+req.session);
+			res.status(200).send("Registered!");
+		}else{
+			console.log(response.body);
 		}
 	});	
 }
@@ -455,8 +490,6 @@ app.post('/userInfo', function (req, res) {
 	
 	table = req.body.table;
 	table = getTableName(table);
-	
-
 	
 	console.log(data);
 	console.log(table);
@@ -835,75 +868,8 @@ function loadProfileInfo(req,table,data){
 }
 
 app.post('/reqChat', function (req, res) {
-	if(checkRequest(req,res)){
-		var request = require('request');
-		request.post({
-			url: "http://data.c100.hasura.me/v1/query",
-			headers: {
-				"Content-Type": "application/json",
-				"Authorization": "Bearer "+req.session.auth.token
-			},
-			body: {
-				"type": "insert",
-				"args": {
-					"table": "request",
-					"objects": [{
-						"req_send_user_id":req.session.auth.user_id,
-						"req_receiver_user_id": req.body.rec_user_id,
-					}]
-					
-				}
-			},
-			json:true
-		}, function(error, response, body){
-				if(response.statusCode === 200){
-					res.status(200).send("Request sent");
-				} else if(response.statusCode === 400) {
-					res.status(response.statusCode).send("Request already sent");
-				}else{
-					console.log(response.body);
-					res.status(response.statusCode).send(response.body);
-				}
-			});
-	}
-})
 
-app.post('/reqNameToChat', function (req, res) {
-	
-		
 	var request = require('request');
-	request.post({
-		url: "http://data.c100.hasura.me/v1/query",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": "Bearer "+req.session.auth.token
-		},
-		body: {
-			"type": "select",
-			"args": {
-				"table": "request",
-				"columns": ["req_receiver_user_id"],
-				"where":{
-					"$or": [{"req_send_user_id": req.session.auth.user_id},
-					{"req_receiver_user_id": req.session.auth.user_id}],
-					"req_status": "true"
-				}
-				
-			}
-		},
-		json:true
-	}, function(error, response, body){
-			if(response.statusCode === 200){
-				res.status(200).send(response.body);
-			} else{
-				console.log(response.body);
-				res.status(response.statusCode).send(response.body);
-			}
-		});
-})
-
-function checkRequest(req,res){
-var request = require('request');
 	request.post({
 		url: "http://data.c100.hasura.me/v1/query",
 		headers: {
@@ -927,7 +893,7 @@ var request = require('request');
 			if(response.statusCode === 200){
 				if(response.body[0] === undefined){
 					console.log(response.body[0]);
-					return true;
+					sendRequest(req,res);
 				}
 				else{
 					if(response.body[0].req_status === true){
@@ -939,13 +905,99 @@ var request = require('request');
 						res.status(200).send("Approve request to chat");
 					}
 				}
-				return false;
+				Return = false;
 			} else{
 				console.log(response.body);
-				return true;
+				sendRequest(req,res);
 			}
-		});	
+	});
+});
+
+function sendRequest(req,res){
+	
+	var request = require('request');
+	request.post({
+		url: "http://data.c100.hasura.me/v1/query",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer "+req.session.auth.token
+		},
+		body: {
+			"type": "insert",
+			"args": {
+				"table": "request",
+				"objects": [{
+				"req_send_user_id":req.session.auth.user_id,
+				"req_receiver_user_id": req.body.rec_user_id,
+				}]
+			}
+		},
+		json:true
+		}, function(error, response, body){
+			if(response.statusCode === 200){
+				res.status(200).send("Request sent");
+			} else if(response.statusCode === 400) {
+				res.status(response.statusCode).send("Request already sent");
+			} else {
+				console.log(response.body);
+				res.status(response.statusCode).send(response.body);
+			}
+		});
 }
+
+app.post('/reqNameToChat', function (req, res) {
+			
+	var request = require('request');
+	request.post({
+		url: "http://data.c100.hasura.me/v1/query",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer "+req.session.auth.token
+		},
+		body: {
+			"type": "select",
+			"args": {
+				"table": "request",
+				"columns": ["req_receiver_user_id","req_send_user_id",{
+					"name": "rec_name",
+					"columns": ["firstname","lastname"]					
+					},{
+					"name": "send_name",
+					"columns": ["firstname","lastname"]						
+					}],
+				"where":{
+					"$or": [{"req_send_user_id": req.session.auth.user_id},
+					{"req_receiver_user_id": req.session.auth.user_id}],
+					"req_status": "true"
+				}
+				
+			}
+		},
+		json:true
+	}, function(error, response, body){
+			if(response.statusCode === 200){
+				var responseText = ``;
+				for(var i = 0; i < response.body.length; i++){
+					var id,fname,lname;
+					if(response.body[i].req_receiver_user_id === req.session.auth.user_id){
+						id = response.body[i].req_send_user_id;
+						fname = response.body[i].send_name.firstname;
+						lname = response.body[i].send_name.lastname;
+					}else {
+						id = response.body[i].req_receiver_user_id;
+						fname = response.body[i].rec_name.firstname;
+						lname = response.body[i].rec_name.lastname;
+					}	
+					responseText += `<div class="people" onclick="chat(${id})">${fname} ${lname}</div>`;
+				}
+				
+				res.status(200).send(responseText);
+			} else{
+				console.log(response.body);
+				res.status(response.statusCode).send(response.body);
+			}
+		});
+});
 
 app.post('/reqNameOfPending', function (req, res) {
 	
@@ -960,7 +1012,10 @@ app.post('/reqNameOfPending', function (req, res) {
 			"type": "select",
 			"args": {
 				"table": "request",
-				"columns": ["req_send_user_id"],
+				"columns": ["req_send_user_id",{
+						"name": "send_name",
+						"columns": ["firstname","lastname"]
+					}],
 				"where":{
 					"req_receiver_user_id": req.session.auth.user_id,
 					"req_status": "false"
@@ -971,13 +1026,18 @@ app.post('/reqNameOfPending', function (req, res) {
 		json:true
 	}, function(error, response, body){
 			if(response.statusCode === 200){
-				res.status(200).send(response.body);
+				var responseText = ``;
+				for(var i = 0; i < response.body.length; i++){
+					responseText += `<div class="people" onclick="accept(${response.body[i].req_send_user_id})">${response.body[i].send_name.firstname} ${response.body[i].send_name.lastname}</div>`;
+				}
+				
+				res.status(200).send(responseText);
 			} else{
 				console.log(response.body);
 				res.status(response.statusCode).send(response.body);
 			}
 		});
-})
+});
 
 app.post('/reqNameOfWaiting', function (req, res) {
 	
@@ -992,10 +1052,12 @@ app.post('/reqNameOfWaiting', function (req, res) {
 			"type": "select",
 			"args": {
 				"table": "request",
-				"columns": ["req_receiver_user_id"],
+				"columns": ["req_receiver_user_id",{
+					"name": "rec_name",
+					"columns": ["firstname","lastname"]
+					}],
 				"where":{
-					"$or": [{"req_send_user_id": req.session.auth.user_id},
-					{"req_receiver_user_id": req.session.auth.user_id}],
+					"req_send_user_id": req.session.auth.user_id,
 					"req_status": "false"
 				}
 				
@@ -1004,12 +1066,164 @@ app.post('/reqNameOfWaiting', function (req, res) {
 		json:true
 	}, function(error, response, body){
 			if(response.statusCode === 200){
-				res.status(200).send(response.body);
+				var responseText = ``;
+				for(var i = 0; i < response.body.length; i++){
+					responseText += `<div class="people" onclick="cancel(${response.body[i].req_receiver_user_id})">${response.body[i].rec_name.firstname} ${response.body[i].rec_name.lastname}</div>`;
+				}
+				
+				res.status(200).send(responseText);
 			} else{
 				console.log(response.body);
 				res.status(response.statusCode).send(response.body);
 			}
 		});
-})
+});
 
+app.post('/acceptRequest', function (req, res) {
 
+	console.log(req.body.user_id+"  " +req.session.auth.user_id)
+	var request = require('request');
+	request.post({
+		url: "http://data.c100.hasura.me/v1/query",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer "+req.session.auth.token
+		},
+		body: {
+			"type": "update",
+			"args": {
+				"table": "request",
+				"$set": {"req_status": true},
+				"where":{
+					"req_send_user_id": req.body.user_id,
+					"req_receiver_user_id": req.session.auth.user_id
+				}
+				
+			}
+		},
+		json:true
+	}, function(error, response, body){
+			if(response.statusCode === 200){
+					console.log(response.body);
+					res.status(200).send("accepted");
+			} else{
+				res.status(response.statusCode).send("something went wrong");
+
+			}
+	});
+});
+
+app.post('/cancelRequest', function (req, res) {
+
+	console.log(req.body.user_id+"  " +req.session.auth.user_id)
+	var request = require('request');
+	request.post({
+		url: "http://data.c100.hasura.me/v1/query",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer "+req.session.auth.token
+		},
+		body: {
+			"type": "delete",
+			"args": {
+				"table": "request",
+				"where":{
+					"req_send_user_id": req.session.auth.user_id,
+					"req_receiver_user_id": req.body.user_id
+				}
+				
+			}
+		},
+		json:true
+	}, function(error, response, body){
+			if(response.statusCode === 200){
+					console.log(response.body);
+					res.status(200).send("Rejected");
+			} else{
+				res.status(response.statusCode).send("something went wrong");
+
+			}
+	});
+});
+
+app.post('/loadChat', function (req, res) {
+
+	var request = require('request');
+	request.post({
+		url: "http://data.c100.hasura.me/v1/query",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer "+req.session.auth.token
+		},
+		body: {
+			"type": "select",
+			"args": {
+				"table": "conversation",
+				"columns": ["sender_user_id","receiver_user_id","message"],
+				"where":{
+					"$and":[
+						{"$or":[{"receiver_user_id": req.body.user_id},{"receiver_user_id": req.session.auth.user_id}]},
+						{"$or":[{"sender_user_id": req.body.user_id},{"sender_user_id": req.session.auth.user_id}]}
+					]
+				}
+				
+			}
+		},
+		json:true
+	}, function(error, response, body){
+			if(response.statusCode === 200){
+				var responseText = ``;
+				for(var i = 0; i < response.body.length; i++){
+					
+					if(response.body[i].sender_user_id === req.session.auth.user_id){
+					
+						responseText += `<p class="msg msgSend"><span> ${response.body[i].message} </span></p>`;
+					
+					} else {
+					
+						responseText += `<p class="msg msgRec"><span> ${response.body[i].message} </span></p>`;
+					}
+				}
+				
+				
+				console.log(req.session);
+				res.status(200).send(responseText);
+			} else{
+				console.log(response.body);
+				res.status(response.statusCode).send("something went wrong");
+
+			}
+	});
+});
+
+app.post('/sendMsg', function (req, res) {
+
+	var request = require('request');
+	request.post({
+		url: "http://data.c100.hasura.me/v1/query",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer "+req.session.auth.token
+		},
+		body: {
+			"type": "insert",
+			"args": {
+				"table": "conversation",
+				"objects":[{
+					"sender_user_id": req.session.auth.user_id,
+					"receiver_user_id": req.body.user_id,
+					"message": req.body.msg
+				}]
+			}
+		},
+		json:true
+	}, function(error, response, body){
+			if(response.statusCode === 200){
+				res.status(200).send("message sent");
+			} else{
+				console.log(response.body);
+				res.status(response.statusCode).send("something went wrong");
+
+			}
+	});
+});

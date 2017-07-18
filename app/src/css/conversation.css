@@ -26,6 +26,7 @@
 
 #textArea{
     flex: 3;
+    visibility: hidden;
 }
 
 #chatBox{
@@ -35,6 +36,35 @@
     border-radius: 0.5em;
     background: white;
     overflow-y: auto;
+}
+
+#emptyChat{
+	text-align: center;
+    font-size: 2em;
+}
+
+.msg{
+	margin: 1em 0.5em;
+}
+
+.msgSend{
+	text-align: right
+}
+
+.msgSend span{
+    padding: 0.5em;
+    border-radius: 0.5em;
+	background: #fff3b2;
+}
+
+.msgRec{
+
+}
+
+.msgRec span{
+    padding: 0.5em;
+    border-radius: 0.5em;
+    background: #77f9a5;
 }
 
 #messageForm{
@@ -60,4 +90,12 @@ button {
     font-weight: bold;
     padding: 0.5em 1.5em;
 	flex: 0.5;
+}
+
+#waitingForResponse .people:hover{
+	background: #c9ffd5;
+}
+
+#waitingforApproval .people:hover{
+	background: #ffa7a3;
 }

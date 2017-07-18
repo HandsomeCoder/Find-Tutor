@@ -6,7 +6,10 @@ signUpForm.onsubmit = function(){
 	var uname = document.getElementById("username").value;
 	var pass = document.getElementById("password").value;
 	var userrole = document.getElementById("role").value;
-	
+	var fname = document.getElementById("firstname").value;
+	var lname = document.getElementById("lastname").value;
+	var gender = document.getElementById("gender").value;
+				
 	var request = new XMLHttpRequest();
     
     request.onreadystatechange = function () {
@@ -24,7 +27,7 @@ signUpForm.onsubmit = function(){
 	};
 	request.open('POST', 'http://localhost:8080/signup', true);
     request.setRequestHeader('Content-Type', 'application/json');
-    request.send(JSON.stringify({username: uname,password: pass,role: userrole}));  
+    request.send(JSON.stringify({username: uname,password: pass,role: userrole,fname: fname,lname: lname,gender: gender}));  
     signUpButton.innerHTML = 'Registering...';	
 
 };
