@@ -1,9 +1,9 @@
 function edit(x){
 		var editForm = {
-		basicInfo: `<form id="editBasicInfoForm" method="post" action="javascript:void(0)">
+		basicInfo: `<form id="editBasicInfoForm" onsubmit="save('basicInfo')" method="post" action="javascript:void(0)">
 					<div id="infoHeader">
 						<p> Edit Basic Information</p>
-						<button id="submit" type="submit" onclick="save('basicInfo')"> Save </button>
+						<button id="submit" type="submit"> Save </button>
 					</div>
 					<div id="content">
 						<table id="editContent">
@@ -37,11 +37,34 @@ function edit(x){
 
 		</form>
 	`,
-	location: `
-				<form id="editLocation" method="post" action="javascript:void(0)">
+	contact: `
+				<form id="editLocation" method="post" onsubmit="save('contact')" action="javascript:void(0)">
 					<div id="infoHeader">
 						<p> Edit Location</p>
-						<button type="submit" id="submit" onclick="save('location')"> Save </button>
+						<button type="submit" id="submit" > Save </button>
+					</div>
+					<div id="content">
+						<table id="editContent">
+								<tr>
+									<td>
+										<input type="email" name="email_id" id="email_id" placeholder="Email ID" required> 
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="number" name="mobile" id="mobile" pattern="[0-9]{10,}" title="Only numbers of length 10 is allowed" placeholder="Mobile Number" required>
+									</td>
+								</tr>
+						</table>
+					</div>
+
+				</form>	
+	`,
+	location: `
+				<form id="editLocation" method="post" onsubmit="save('location')" action="javascript:void(0)">
+					<div id="infoHeader">
+						<p> Edit Location</p>
+						<button type="submit" id="submit" > Save </button>
 					</div>
 					<div id="content">
 						<table id="editContent">
@@ -66,10 +89,10 @@ function edit(x){
 				</form>
 	`,
 	education: `
-				<form id="editEducation" method="post" action="javascript:void(0)">
+				<form id="editEducation" method="post" onsubmit="save('education')" action="javascript:void(0)">
 					<div id="infoHeader">
 						<p> Edit Education</p>
-						<button type="submit" id="submit" onclick="save('education')"> Save </button>
+						<button type="submit" id="submit" > Save </button>
 					</div>
 					<div id="content">
 						<table id="editContent">
@@ -94,10 +117,10 @@ function edit(x){
 				</form>
 	`,
 	requirements: `	
-				<form id="editBasicInfoForm" method="post" action="javascript:void(0)">
+				<form id="editBasicInfoForm" method="post" onsubmit="save('requirements')" action="javascript:void(0)">
 					<div id="infoHeader">
 						<p> Edit Education</p>
-						<button type="submit" id="submit" onclick="save('requirements')"> Save </button>
+						<button type="submit" id="submit" > Save </button>
 					</div>
 					<div id="content">
 						<table id="editContent">
@@ -111,10 +134,10 @@ function edit(x){
 
 				</form>
 		`,
-	qualification: `				<form id="editQualification" method="post" action="javascript:void(0)">
+	qualification: `				<form id="editQualification" onsubmit="save('qualification')" method="post" action="javascript:void(0)">
 					<div id="infoHeader">
 						<p> Edit Qualification</p>
-						<button id="submit" type="submit" onclick="save('qualification')"> Save </button>
+						<button id="submit" type="submit" > Save </button>
 					</div>
 					<div id="content">
 						<table id="editContent">
@@ -143,10 +166,10 @@ function edit(x){
 
 				</form>`,
 	skillset: `
-				<form id="editSkillset" method="post" action="javascript:void(0)">
+				<form id="editSkillset" method="post" onsubmit="save('skillset')" action="javascript:void(0)">
 					<div id="infoHeader">
 						<p> Edit Skillset</p>
-						<button type="submit" id="submit" onclick="save('skillset')"> Save </button>
+						<button type="submit" id="submit" > Save </button>
 					</div>
 					<div id="content">
 						<table id="editContent">
@@ -226,12 +249,20 @@ function save(x){
 }
 
 function getData(x){
+		console.log(x);
 	   switch(x) {
 			case 'basicInfo': 
 				return {
 					firstname: document.getElementById('firstname').value,
 					lastname: document.getElementById('lastname').value,
 					gender: document.getElementById('gender').value
+				};
+				break;
+				
+			case 'contact':
+				return {
+					email_id: document.getElementById('email_id').value,
+					mobile: document.getElementById('mobile').value, 
 				};
 				break;
 				

@@ -238,6 +238,7 @@ app.post('/navOption', function (req, res) {
 			
 			res.status(200).send(`
 				<p onclick="getInfo('basicInfo')"> Basic Information </p>
+				<p onclick="getInfo('contact')"> Contact Information </p>
 				<p onclick="getInfo('location')"> Location </p>
 				<p onclick="getInfo('education')"> Education </p>
 				<p onclick="getInfo('requirements')"> Requirements </p>
@@ -246,6 +247,7 @@ app.post('/navOption', function (req, res) {
 			
 			res.status(200).send(`
 				<p onclick="getInfo('basicInfo')"> Basic Information </p>
+				<p onclick="getInfo('contact')"> Contact Information </p>
 				<p onclick="getInfo('location')"> Location </p>
 				<p onclick="getInfo('qualification')"> Qualification </p>
 				<p onclick="getInfo('skillset')"> Skillset </p>
@@ -292,10 +294,31 @@ function loadInfo(req,x,data){
 					</div>
 			`;
 			break;
+		case 'contact':
+			return `
+					<div id="infoHeader">
+						<p> Contact Information</p>
+						<button onclick="edit('contact')"> Edit </button>
+					</div>
+					<div id="content">
+						<table id="displayContent">
+							<tr>
+								<td> Email ID: </td>
+								<td id="email_id">${data.email_id}</td>
+							</tr>
+							
+							<tr>
+								<td> Mobile: </td>
+								<td id="mobile">${data.mobile}</td>
+							</tr>
+						</table>
+					</div>				
+			`;
+			break;
 		case 'location' : 
 			return `
 					<div id="infoHeader">
-						<p> Loaction</p>
+						<p> Location</p>
 						<button onclick="edit('location')"> Edit </button>
 					</div>
 					<div id="content">
@@ -463,6 +486,9 @@ function getTableName(x){
 		case 'basicInfo':
 			table = "user_basic_info";
 			break;
+		case 'contact':
+			table = "contact_info";
+			break;
 		case 'location':
 			table = "user_location";
 			break;
@@ -495,7 +521,47 @@ app.post('/userInfo', function (req, res) {
 	console.log(table);
 	
 	if(checkSession(req)){
+		var request = require('request');
+			request.post({
+				 url: "http://data.c100.hasura.me/v1/query",
+				 headers: {
+					"Content-Type": "application/json",
+					"Authorization": "Bearer "+req.session.auth.token
+				 },
+				 body: {
+					"type": "select",
+					"args": {
+						"table": table,
+						"columns": ["user_id"],
+						"where" : {
+							"user_id": req.session.auth.user_id
+						}
+					}
+				},
+				json:true
+			}, function(error, response, body){
+		//	   console.log(JSON.stringify(response.body));
+				if(response.statusCode === 200){
+					console.log(response.body)
+					if(response.body.length === 0){
+						insertInfo(req,res,data,table)
+					}
+					else{
+						updateInfo(req,res,data,table)
+					}
+				} else {
+					console.log(response.body);
+					res.status(401).send("Something went wrong, Try Again");
+				}
+			});			
+
 		
+	} else {
+		res.status(401).send("Something went wrong, Try Again");
+	}
+});
+
+function insertInfo(req,res,data,table){
 			var request = require('request');
 			request.post({
 				 url: "http://data.c100.hasura.me/v1/query",
@@ -522,11 +588,42 @@ app.post('/userInfo', function (req, res) {
 				}
 			});	
 		//	res.status(200).send("inserted");
-		
-	} else {
-		res.status(401).send("Something went wrong, Try Again");
-	}
-});
+}
+
+function updateInfo(req,res,data,table){
+			delete data['user_id'];
+			
+			console.log("update  data:"+JSON.stringify(data));
+			var request = require('request');
+			request.post({
+				 url: "http://data.c100.hasura.me/v1/query",
+				 headers: {
+					"Content-Type": "application/json",
+					"Authorization": "Bearer "+req.session.auth.token
+				 },
+				 body: {
+					"type": "update",
+					"args": {
+						"table": table,
+						"$set": data,
+						"where": {
+							"user_id": req.session.auth.user_id
+						}
+					}
+				},
+				json:true
+			}, function(error, response, body){
+		//	   console.log(JSON.stringify(response.body));
+				if(response.statusCode === 200){
+					console.log(response.body);
+					res.status(response.statusCode).send("updated!")
+				} else {
+					console.log(response.body);
+					res.status(401).send("Something went wrong, Try Again");
+				}
+			});	
+		//	res.status(200).send("inserted");
+}
 
 app.post('/search', function (req, res) {
 	
