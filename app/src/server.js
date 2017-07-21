@@ -729,7 +729,7 @@ function filterByRole(users,req,res){
 							<button onclick="sendMsg(${user_id})">Send Message</button>
 						</div>
 					</div>
-					<div id="viewUserProfile${i+1}">
+					<div class="viewUser" id="viewUserProfile${i+1}">
 					</div>`;
 				}
 				console.log(response.body);
@@ -750,6 +750,7 @@ app.post('/viewProfile', function (req, res) {
 	if(role == "Student"){
 		navOption = `
 				<p onclick="getViewInfo('basicInfo',${req.body.user_id})"> Basic Information </p>
+				<p onclick="getViewInfo('contact',${req.body.user_id})"> Contact Information </p>
 				<p onclick="getViewInfo('location',${req.body.user_id})"> Location </p>
 				<p onclick="getViewInfo('education',${req.body.user_id})"> Education </p>
 				<p onclick="getViewInfo('requirements',${req.body.user_id})"> Requirements </p>
@@ -757,6 +758,7 @@ app.post('/viewProfile', function (req, res) {
 	} else {
 		navOption = `
 				<p onclick="getViewInfo('basicInfo',${req.body.user_id})"> Basic Information </p>
+				<p onclick="getViewInfo('contact',${req.body.user_id})"> Contact Information </p>
 				<p onclick="getViewInfo('location',${req.body.user_id})"> Location </p>
 				<p onclick="getViewInfo('qualification',${req.body.user_id})"> Qualification </p>
 				<p onclick="getViewInfo('skillset',${req.body.user_id})"> Skillset </p>
@@ -852,6 +854,27 @@ function loadProfileInfo(req,table,data){
 							</tr>
 						</table>
 					</div>
+			`;
+			break;
+			
+		case 'contact' :
+			return `
+			<div id="infoHeader">
+						<p> Loaction</p>
+					</div>
+					<div id="content">
+						<table id="displayContent">
+							<tr>
+								<td> Email ID: </td>
+								<td id="email_id">${data.email_id}</td>
+							</tr>
+							
+							<tr>
+								<td> Mobile No.: </td>
+								<td id="state">${data.mobile}</td>
+							</tr>
+						</table>
+					</div>	
 			`;
 			break;
 		case 'location' : 

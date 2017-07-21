@@ -65,9 +65,7 @@ function getViewInfo(table, user_id){
 			if (request.status === 200) {
 				var content = request.responseText;
 				document.getElementById("infoSection"+user_id).innerHTML = content.toString();
-            } else if (request.status === 404) {
-				edit(x);
-			} else {
+            } else {
 				alert("Something went wrong, Try again")
 			}
 		}
