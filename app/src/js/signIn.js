@@ -18,7 +18,7 @@ signInForm.onsubmit = function(){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/login', true);
+	request.open('POST','/login', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({username: uname,password: pass}));  
     signInButton.innerHTML = 'Signing In...';	
