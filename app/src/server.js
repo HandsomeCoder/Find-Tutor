@@ -5,8 +5,10 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 
-var app = express();
+var app = require('express')();
+
 app.use(bodyParser.json());
+
 
 app.use(session({
     secret: 'someRandomSecretValue',
