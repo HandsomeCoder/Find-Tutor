@@ -15,7 +15,7 @@ function getNamesToChat(){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/reqNameToChat', true);
+	request.open('POST', '/reqNameToChat', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send();
 }
@@ -31,7 +31,7 @@ function getNamesOfPendingReq(){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/reqNameOfPending', true);
+	request.open('POST', '/reqNameOfPending', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send();	
 }
@@ -46,7 +46,7 @@ function getNamesOfWaitingForAccept(){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/reqNameOfWaiting', true);
+	request.open('POST', '/reqNameOfWaiting', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send();	
 }
@@ -65,7 +65,7 @@ function chat(x){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/loadChat', true);
+	request.open('POST', '/loadChat', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({user_id: x}));	
 }
@@ -81,7 +81,7 @@ function accept(x){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/acceptRequest', true);
+	request.open('POST', '/acceptRequest', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({user_id: x}));	
 }
@@ -97,7 +97,7 @@ function cancel(x){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/cancelRequest', true);
+	request.open('POST', '/cancelRequest', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({user_id: x}));	
 }
@@ -116,7 +116,7 @@ chatForm.onsubmit = function(){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/sendMsg', true);
+	request.open('POST', '/sendMsg', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({user_id: receiver_user_id,msg: msg}));		
 }

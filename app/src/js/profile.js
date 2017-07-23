@@ -203,11 +203,10 @@ function getInfo(x){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/info', true);
+	request.open('POST', '/info', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({info: x}));  
 }
-
 
 function getNav(){
 	var request = new XMLHttpRequest();
@@ -223,7 +222,7 @@ function getNav(){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/navOption', true);
+	request.open('POST', '/navOption', true);
 	request.send();
 }
 
@@ -242,7 +241,7 @@ function save(x){
 		}
 	};
 	
-	request.open('POST', 'http://localhost:8080/userInfo', true);
+	request.open('POST', '/userInfo', true);
 	request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({table: x,data: getData(x)}));  
     saveBtn.innerHTML = 'Saving...';	

@@ -25,7 +25,7 @@ document.getElementById("logout").onclick = function(){
 		}
 	};
 	
-	request.open('POST', 'http://localhost:8080/logout', true);
+	request.open('POST', '/logout', true);
     request.send();
 }
 

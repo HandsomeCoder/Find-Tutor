@@ -23,7 +23,7 @@ searchForm.onsubmit = function(){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/search', true);
+	request.open('POST', '/search', true);
 	request.setRequestHeader('Content-Type', 'application/json');
 	request.send(JSON.stringify({country: country, state: state, city: city}));  
 	searchBtn.innerHTML = 'Searching...';
@@ -46,7 +46,7 @@ function viewProfile(user_id,role,i){
 				}
 			}
 		};
-		request.open('POST', 'http://localhost:8080/viewProfile', true);
+		request.open('POST', '/viewProfile', true);
 		request.setRequestHeader('Content-Type', 'application/json');
 		request.send(JSON.stringify({user_id: user_id,role: role}));	
 	} else {
@@ -70,7 +70,7 @@ function getViewInfo(table, user_id){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/viewInfo', true);
+	request.open('POST', '/viewInfo', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({table: table,user_id: user_id}));  
 }
@@ -87,7 +87,7 @@ function sendMsg(x){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/reqChat', true);
+	request.open('POST', '/reqChat', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({rec_user_id: x})); 
 }

@@ -25,7 +25,7 @@ signUpForm.onsubmit = function(){
 			}
 		}
 	};
-	request.open('POST', 'http://localhost:8080/signup', true);
+	request.open('POST', '/signup', true);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(JSON.stringify({username: uname,password: pass,role: userrole,fname: fname,lname: lname,gender: gender}));  
     signUpButton.innerHTML = 'Registering...';	
