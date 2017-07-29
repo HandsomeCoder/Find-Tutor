@@ -1150,7 +1150,11 @@ app.post('/reqNameOfPending', function (req, res) {
 			if(response.statusCode === 200){
 				var responseText = ``;
 				for(var i = 0; i < response.body.length; i++){
-					responseText += `<div class="people" onclick="accept(${response.body[i].req_send_user_id})">${response.body[i].send_name.firstname} ${response.body[i].send_name.lastname}</div>`;
+					responseText += `<div class="people" onclick="accept(${response.body[i].req_send_user_id})">
+						<p class="name">${response.body[i].send_name.firstname} ${response.body[i].send_name.lastname}</p>
+						<p class="smallText">(Click to Accept Request)</p>
+					
+					</div>`;
 				}
 				
 				res.status(200).send(responseText);
@@ -1190,7 +1194,10 @@ app.post('/reqNameOfWaiting', function (req, res) {
 			if(response.statusCode === 200){
 				var responseText = ``;
 				for(var i = 0; i < response.body.length; i++){
-					responseText += `<div class="people" onclick="cancel(${response.body[i].req_receiver_user_id})">${response.body[i].rec_name.firstname} ${response.body[i].rec_name.lastname}</div>`;
+					responseText += `<div class="people" onmouseover="a(this)"  onclick="cancel(${response.body[i].req_receiver_user_id})">
+						<p class="name">${response.body[i].rec_name.firstname} ${response.body[i].rec_name.lastname}</p>
+						<p class="smallText">(Click to Cancel Request)</p>
+					</div>`;
 				}
 				
 				res.status(200).send(responseText);

@@ -12,7 +12,11 @@ searchForm.onsubmit = function(){
 	request.onreadystatechange = function () {
 		if (request.readyState === XMLHttpRequest.DONE) {
 			if (request.status === 200) {
-				result.innerHTML = request.responseText;
+				if(request.responseText === ""){
+					result.innerHTML = "<h2>No Result Found</h2>";	
+				}else{
+					result.innerHTML = request.responseText;
+				}
 				searchBtn.innerHTML = 'Search'
 			} else if (request.status === 403) {
 				result.innerHTML = 'Username already Exsit';		
@@ -37,8 +41,10 @@ function viewProfile(user_id,role,i){
 		request.onreadystatechange = function () {
 			if (request.readyState === XMLHttpRequest.DONE) {
 				if (request.status === 200) {
+
 					document.getElementById("viewUserProfile"+i).innerHTML = request.responseText;
 					document.getElementById("viewProfileBtn_"+i).innerHTML = "Close Profile";
+					getViewInfo('basicInfo',user_id);
 				} else if (request.status === 403) {
 			
 				} else {

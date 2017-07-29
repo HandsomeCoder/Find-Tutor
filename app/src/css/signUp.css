@@ -44,3 +44,7 @@ form table input,select{
 	width: 35em;
 	font-size: 16px;
 }
+
+#submit{
+    float: right;
+}

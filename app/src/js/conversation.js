@@ -9,7 +9,7 @@ function getNamesToChat(){
     request.onreadystatechange = function () {
 		if (request.readyState === XMLHttpRequest.DONE) {
 			if (request.status === 200) {
-				document.getElementById("nameSection").innerHTML = "Select name to chat\n"+request.responseText;
+				document.getElementById("nameSection").innerHTML += request.responseText;
             } else {
 				alert(request.responseText)
 			}
@@ -25,7 +25,12 @@ function getNamesOfPendingReq(){
     request.onreadystatechange = function () {
 		if (request.readyState === XMLHttpRequest.DONE) {
 			if (request.status === 200) {
-				document.getElementById("waitingForResponse").innerHTML = "Waiting for Response\n"+request.responseText;
+				if(request.responseText === "" ){
+					document.getElementById("waitingForResponse").innerHTML += "No Pending Request";
+				}
+				else{
+					document.getElementById("waitingForResponse").innerHTML += request.responseText;
+				}
             } else {
 				alert(request.responseText)
 			}
@@ -40,8 +45,12 @@ function getNamesOfWaitingForAccept(){
     request.onreadystatechange = function () {
 		if (request.readyState === XMLHttpRequest.DONE) {
 			if (request.status === 200) {
-				document.getElementById("waitingforApproval").innerHTML = "\nWaiting For Approval\n"+request.responseText;
-            } else {
+				if(request.responseText === ""){
+					document.getElementById("waitingforApproval").innerHTML += "No Waiting Request";
+				} else {
+					document.getElementById("waitingforApproval").innerHTML += request.responseText;
+				}
+			} else {
 				alert(request.responseText)
 			}
 		}

@@ -96,6 +96,28 @@ button {
 	background: #c9ffd5;
 }
 
+#divider{
+    border: 2px solid black;
+    border-radius: 25%;
+    margin: 2em 0em;
+}
+
+.interDivision{
+    border-style: dashed;
+}
+
 #waitingforApproval .people:hover{
 	background: #ffa7a3;
+}
+
+
+.name{
+	margin: 0em;
+    font-weight: bold;
+}
+
+.smallText{
+    font-size: 0.9em;
+    padding: 0em;
+    margin: 0em;
 }
