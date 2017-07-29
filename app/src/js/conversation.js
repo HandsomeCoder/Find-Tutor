@@ -26,10 +26,10 @@ function getNamesOfPendingReq(){
 		if (request.readyState === XMLHttpRequest.DONE) {
 			if (request.status === 200) {
 				if(request.responseText === "" ){
-					document.getElementById("waitingForResponse").innerHTML += "No Pending Request";
+					document.getElementById("waitingForResponse").innerHTML = "No Pending Request";
 				}
 				else{
-					document.getElementById("waitingForResponse").innerHTML += request.responseText;
+					document.getElementById("waitingForResponse").innerHTML = request.responseText;
 				}
             } else {
 				alert(request.responseText)
@@ -46,9 +46,9 @@ function getNamesOfWaitingForAccept(){
 		if (request.readyState === XMLHttpRequest.DONE) {
 			if (request.status === 200) {
 				if(request.responseText === ""){
-					document.getElementById("waitingforApproval").innerHTML += "No Waiting Request";
+					document.getElementById("waitingforApproval").innerHTML = "No Waiting Request";
 				} else {
-					document.getElementById("waitingforApproval").innerHTML += request.responseText;
+					document.getElementById("waitingforApproval").innerHTML = request.responseText;
 				}
 			} else {
 				alert(request.responseText)
