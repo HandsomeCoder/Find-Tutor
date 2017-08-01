@@ -9,7 +9,15 @@ function getNamesToChat(){
     request.onreadystatechange = function () {
 		if (request.readyState === XMLHttpRequest.DONE) {
 			if (request.status === 200) {
-				document.getElementById("nameSection").innerHTML += request.responseText;
+				if(request.responseText === "" ){
+					document.getElementById("nameSection").innerHTML = 	"<b>Search for People to chat</b>"+
+					"<hr class=\"interDivision\" />"
+					"No Pending Request";
+				}
+				else{
+					document.getElementById("nameSection").innerHTML = 	"<b>Search for People to chat</b>"+
+					"<hr class=\"interDivision\" />"+request.responseText;
+				}
             } else {
 				alert(request.responseText)
 			}
@@ -26,10 +34,13 @@ function getNamesOfPendingReq(){
 		if (request.readyState === XMLHttpRequest.DONE) {
 			if (request.status === 200) {
 				if(request.responseText === "" ){
-					document.getElementById("waitingForResponse").innerHTML = "No Pending Request";
+					document.getElementById("waitingForResponse").innerHTML = "	<b>Pending request for your response</b>"+
+					"<hr class=\"interDivision\"/>"+
+					"No Pending Request";
 				}
 				else{
-					document.getElementById("waitingForResponse").innerHTML = request.responseText;
+					document.getElementById("waitingForResponse").innerHTML = "	<b>Pending request for your response</b>"+
+					"<hr class=\"interDivision\"/>"+request.responseText;
 				}
             } else {
 				alert(request.responseText)
@@ -46,9 +57,12 @@ function getNamesOfWaitingForAccept(){
 		if (request.readyState === XMLHttpRequest.DONE) {
 			if (request.status === 200) {
 				if(request.responseText === ""){
-					document.getElementById("waitingforApproval").innerHTML = "No Waiting Request";
+					document.getElementById("waitingforApproval").innerHTML = "<b>Waiting for User approval</b>"+
+					"<hr class=\"interDivision\"/>"+
+					"No Waiting Request";
 				} else {
-					document.getElementById("waitingforApproval").innerHTML = request.responseText;
+					document.getElementById("waitingforApproval").innerHTML = "<b>Waiting for User approval</b>"+
+					"<hr class=\"interDivision\"/>"+request.responseText;
 				}
 			} else {
 				alert(request.responseText)
