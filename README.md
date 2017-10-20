@@ -1,38 +1,11 @@
-# Quickstart - Build your own Docker image#
+# Abstract:
 
-Build the Docker image using the following command
+Web application name “Find Tutor” helps student / parent to find tuition teachers and vice versa with a matching criteria. Student / parent can post their requirement(s) for tutor – subjects / topics. Tutors can post their skill sets – subjects / topics on which they can impart knowledge based on their work experience.
 
-```bash
-$ docker build -t nodejs-express:<tag> .
-```
+# Objective:
 
-Run the Docker container using the command below.
+To connect skilled and experienced tutors with student(s) and to help student(s) to find appropriate tutor for himself.
 
-```bash
-$ docker run -d -p 8080:8080 nodejs-express:<tag>
-```
+# For more Information:
 
-# Quickstart - git based pipeline
-
-Follow the steps mentioned below for git based pipeline
-
-1. Ensure that you have a git project
-2. Edit `app/src/server.js`
-3. Commit your changes
-
-    ```bash
-    $ git add .
-    $ git commit -m "message"
-    ```
-
-4. Push the changes to git
-
-    ```bash
-    $ git push <remote> master
-    ```
-
-# Advanced usage
-
-### **Port**
-
-Default Port for application is `8080` .
+visit https://harshshah1295.wordpress.com
